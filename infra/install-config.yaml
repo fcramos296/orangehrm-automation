@@ -1,0 +1,28 @@
+# Configuração do instalador CLI do OrangeHRM (somente ambiente descartável de teste).
+database:
+  hostName: db
+  hostPort: 3306
+  databaseName: orangehrm_qa
+  privilegedDatabaseUser: root
+  privilegedDatabasePassword: root
+  useSameDbUserForOrangeHRM: y
+  orangehrmDatabaseUser: ~
+  orangehrmDatabasePassword: ~
+  isExistingDatabase: n
+  enableDataEncryption: n
+
+organization:
+  name: QA Isolated Env
+  country: BR
+
+admin:
+  adminUserName: Admin
+  adminPassword: admin123
+  adminEmployeeFirstName: Qa
+  adminEmployeeLastName: Admin
+  workEmail: admin@example.com
+  contactNumber: ~
+  registrationConsent: false
+
+license:
+  agree: y

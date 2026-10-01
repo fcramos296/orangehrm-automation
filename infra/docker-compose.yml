@@ -1,0 +1,26 @@
+# Instância isolada e descartável do OrangeHRM para os cenários que gravam dados.
+# Uso: ./infra/setup.sh  (sobe, instala, ajusta credenciais e popula a massa)
+name: orangehrm-qa
+
+services:
+  db:
+    image: ${MARIADB_IMAGE:-mariadb:11}
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    tmpfs:
+      - /var/lib/mysql  # dados em memória: cada execução começa do zero
+
+  app:
+    image: ${ORANGEHRM_IMAGE:-orangehrm/orangehrm:5.9}
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${ORANGEHRM_PORT:-8080}:80"
+    volumes:
+      - ./install-config.yaml:/opt/qa/install-config.yaml:ro

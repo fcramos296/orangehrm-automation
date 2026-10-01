@@ -1,0 +1,89 @@
+[project]
+name = "orangehrm-automation"
+version = "1.0.0"
+description = "Regressão automatizada do módulo Recruitment do OrangeHRM (Playwright + Python)."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "playwright==1.56.0",
+    "pytest==9.1.1",
+    "pytest-playwright==0.9.0",
+    "pytest-xdist==3.8.0",
+    "pytest-rerunfailures==16.7",
+    "allure-pytest==2.16.2",
+    "pydantic==2.13.4",
+    "pydantic-settings==2.14.2",
+]
+
+[project.optional-dependencies]
+dev = ["ruff==0.16.9"]
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+# --- pytest -------------------------------------------------------------------
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = [
+    "-ra",
+    "--strict-markers",
+    "--strict-config",
+    "--alluredir=reports/allure-results",
+    "--output=reports/test-results",
+    "--screenshot=only-on-failure",
+    "--tracing=retain-on-failure",
+    "--video=retain-on-failure",
+]
+markers = [
+    "smoke: caminho crítico, roda a cada push",
+    "api: valida a API REST diretamente",
+    "ui: valida pelo navegador",
+    "e2e: fluxo ponta a ponta entre área pública e interna",
+    "write: grava dados; exige ambiente isolado (ORANGEHRM_ALLOW_WRITE=true)",
+]
+filterwarnings = ["error::pytest.PytestUnknownMarkWarning"]
+
+# --- ruff ---------------------------------------------------------------------
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E", "W", "F",   # pycodestyle / pyflakes
+    "I",             # isort
+    "B",             # bugbear
+    "UP",            # pyupgrade
+    "SIM",           # simplify
+    "C4",            # comprehensions
+    "PT",            # pytest style
+    "RET",           # returns
+    "S",             # bandit (segurança)
+    "BLE",           # blind except
+    "N",             # naming
+    "PL",            # pylint (subset)
+    "RUF",
+]
+ignore = [
+    "PLR0913",  # fixtures do pytest naturalmente recebem muitos argumentos
+    "PLR2004",  # números mágicos são limites de negócio explícitos nos testes
+    "RUF001",   # textos em português com acentos
+    "RUF002",
+    "RUF003",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101"]  # assert é o idioma do pytest
+
+[tool.ruff.lint.isort]
+known-first-party = ["orangehrm"]
+
+[tool.ruff.format]
+quote-style = "double"

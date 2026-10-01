@@ -1,0 +1,118 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "0 9 * * 1-5" # dias úteis, 06:00 BRT: detecta regressões na demo pública
+  workflow_dispatch:
+    inputs:
+      suite:
+        description: "Marcadores do pytest para a execução contra a demo"
+        default: "not write"
+        required: false
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  PYTHON_VERSION: "3.12"
+  ALLURE_VERSION: "2.46.1"
+  FORCE_COLOR: "1"
+
+jobs:
+  lint:
+    name: Ruff (lint + format)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/ruff-action@v3
+        with:
+          version: "0.16.9"
+          args: "--version"
+      - run: ruff check --output-format=github .
+      - run: ruff format --check .
+
+  isolated:
+    name: Regressão completa (ambiente isolado)
+    needs: lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ORANGEHRM_BASE_URL: http://localhost:8080
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+      - name: Instalar dependências
+        run: |
+          pip install -e .
+          python -m playwright install --with-deps chromium
+
+      - name: Subir OrangeHRM isolado (Docker) e popular massa
+        run: ./infra/setup.sh
+
+      - name: Regressão de leitura (paralela)
+        run: pytest -m "not write" -n auto --alluredir=reports/allure-results
+
+      - name: Cenários de escrita com limpeza (serial)
+        if: ${{ !cancelled() }}
+        env:
+          ORANGEHRM_ALLOW_WRITE: "true"
+        run: pytest -m write --alluredir=reports/allure-results
+
+      - name: Logs do OrangeHRM em caso de falha
+        if: failure()
+        run: docker compose -f infra/docker-compose.yml logs app --tail=200
+
+      - name: Descartar ambiente
+        if: always()
+        run: ./infra/teardown.sh
+
+      - uses: ./.github/actions/allure-report
+        if: ${{ !cancelled() }}
+        with:
+          name: isolated
+          allure-version: ${{ env.ALLURE_VERSION }}
+
+  demo:
+    name: Regressão de leitura (demo pública)
+    needs: lint
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ORANGEHRM_BASE_URL: https://opensource-demo.orangehrmlive.com
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+      - name: Instalar dependências
+        run: |
+          pip install -e .
+          python -m playwright install --with-deps chromium
+
+      # Ambiente compartilhado: a flag de escrita é recusada pelo Settings e os
+      # cenários "write" são pulados. Uma nova tentativa absorve instabilidade da
+      # demo; o Allure mostra quais testes precisaram dela.
+      - name: Regressão de leitura
+        env:
+          SUITE: ${{ github.event.inputs.suite || 'not write' }}
+        run: >
+          pytest -m "$SUITE"
+          -n 4 --reruns 1 --reruns-delay 5
+          --alluredir=reports/allure-results
+
+      - uses: ./.github/actions/allure-report
+        if: ${{ !cancelled() }}
+        with:
+          name: demo
+          allure-version: ${{ env.ALLURE_VERSION }}

@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Divergência de regra/tela (possível defeito do produto)",
+    "matchedStatuses": ["failed"],
+    "messageRegex": ".*AssertionError.*"
+  },
+  {
+    "name": "Ambiente indisponível ou lento",
+    "matchedStatuses": ["broken", "failed"],
+    "messageRegex": ".*(Timeout|net::ERR|ECONNREFUSED|HTTP 5\\d\\d).*"
+  },
+  {
+    "name": "Massa ausente no ambiente compartilhado",
+    "matchedStatuses": ["skipped"],
+    "messageRegex": ".*(sem vagas|sem candidatos|massa).*"
+  },
+  {
+    "name": "Cenários de escrita desabilitados (ambiente compartilhado)",
+    "matchedStatuses": ["skipped"],
+    "messageRegex": ".*ORANGEHRM_ALLOW_WRITE.*"
+  }
+]

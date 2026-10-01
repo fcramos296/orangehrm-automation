@@ -1,0 +1,39 @@
+name: Allure report
+description: Gera o relatório Allure (arquivo único) e publica resultados, relatório e traces como artefatos.
+
+inputs:
+  name:
+    description: "Sufixo dos artefatos (ex.: isolated, demo)"
+    required: true
+  allure-version:
+    description: Versão do Allure CLI
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: "21"
+    - name: Gerar relatório
+      shell: bash
+      run: |
+        npm install -g "allure-commandline@${{ inputs.allure-version }}"
+        allure generate reports/allure-results --clean --single-file -o reports/allure-report
+    - uses: actions/upload-artifact@v4
+      with:
+        name: allure-report-${{ inputs.name }}
+        path: reports/allure-report/index.html
+        retention-days: 30
+    - uses: actions/upload-artifact@v4
+      with:
+        name: allure-results-${{ inputs.name }}
+        path: reports/allure-results
+        retention-days: 30
+    - uses: actions/upload-artifact@v4
+      with:
+        name: playwright-traces-${{ inputs.name }}
+        path: reports/test-results
+        if-no-files-found: ignore
+        retention-days: 14

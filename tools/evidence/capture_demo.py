@@ -315,18 +315,20 @@ def timesheet_variations(page: Page, api: ApiClient) -> None:
     result["after_back_url"] = page.url
     page.go_forward()
     loader.wait_for(state="hidden")
-    page.wait_for_timeout(1200)
+    page.wait_for_timeout(3000)
     result["after_forward"] = period.input_value()
 
-    page.locator(".orangehrm-timeperiod-icon.--prev").click()
+    with page.expect_response("**/api/v2/time/timesheets/default?*"):
+        page.locator(".orangehrm-timeperiod-icon.--prev").click()
     loader.wait_for(state="hidden")
-    page.wait_for_timeout(1200)
+    page.wait_for_timeout(2500)
     result["previous_period"] = period.input_value()
     result["previous_url"] = page.url
     shot(page, "23_detail_previous_period")
-    page.locator(".orangehrm-timeperiod-icon.--next").click()
+    with page.expect_response("**/api/v2/time/timesheets/default?*"):
+        page.locator(".orangehrm-timeperiod-icon.--next").click()
     loader.wait_for(state="hidden")
-    page.wait_for_timeout(1200)
+    page.wait_for_timeout(2500)
     result["back_to_period"] = period.input_value()
 
     page.goto(detail_url)

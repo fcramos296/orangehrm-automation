@@ -73,6 +73,7 @@ select = [
 ]
 ignore = [
     "PLR0913",  # fixtures do pytest naturalmente recebem muitos argumentos
+    "PLR0917",
     "PLR2004",  # números mágicos são limites de negócio explícitos nos testes
     "RUF001",   # textos em português com acentos
     "RUF002",

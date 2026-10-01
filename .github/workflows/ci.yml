@@ -30,7 +30,7 @@ jobs:
     name: Ruff (lint + format)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - uses: astral-sh/ruff-action@v3
         with:
           version: "0.16.9"
@@ -46,8 +46,8 @@ jobs:
     env:
       ORANGEHRM_BASE_URL: http://localhost:8080
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: pip
@@ -90,8 +90,8 @@ jobs:
     env:
       ORANGEHRM_BASE_URL: https://opensource-demo.orangehrmlive.com
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: pip

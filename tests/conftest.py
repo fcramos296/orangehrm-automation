@@ -19,6 +19,7 @@ import pytest
 from playwright.sync_api import APIRequestContext, BrowserContext, Page, Playwright
 
 from orangehrm.api.client import ApiClient
+from orangehrm.api.core import CoreApi
 from orangehrm.api.recruitment import PublicRecruitmentApi, RecruitmentApi
 from orangehrm.config.settings import Settings, get_settings
 from orangehrm.support.environment import detect_app_version, write_allure_environment
@@ -104,6 +105,11 @@ def anonymous_api(anonymous_request: APIRequestContext, settings: Settings) -> A
 @pytest.fixture(scope="session")
 def admin_api(admin_request: APIRequestContext, settings: Settings) -> ApiClient:
     return ApiClient(admin_request, settings)
+
+
+@pytest.fixture(scope="session")
+def core_api(admin_api: ApiClient) -> CoreApi:
+    return CoreApi(admin_api)
 
 
 @pytest.fixture(scope="session")

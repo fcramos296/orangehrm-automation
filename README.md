@@ -33,15 +33,19 @@ src/orangehrm/
 ├── api/
 │   ├── client.py             # cliente HTTP sobre APIRequestContext (login via CSRF, verbos)
 │   ├── models.py             # contratos das respostas (pydantic)
-│   └── recruitment.py        # serviços: API pública de vagas e API interna de Recruitment
+│   ├── core.py               # formato de data e textos configurados na aplicação
+│   ├── recruitment.py        # serviços: API pública de vagas e API interna de Recruitment
+│   └── time.py               # serviços de leitura do módulo Time
 ├── pages/                    # Page Object Model
 │   ├── base_page.py
 │   ├── components/           # componentes oxd reutilizáveis (campo de formulário, tabela, diálogo)
 │   ├── login_page.py
 │   ├── public/               # página de vagas e formulário de candidatura
-│   └── recruitment/          # Candidates
+│   ├── recruitment/          # Candidates
+│   └── time/                 # Employee Timesheets e detalhe do timesheet
 ├── data/                     # dados sintéticos (candidatos e arquivos de currículo gerados em runtime)
 └── support/                  # ambiente do Allure e seed do ambiente isolado
+tools/evidence/                # coleta de prints e dados na demo (somente leitura)
 tests/
 ├── api/                      # contrato e regras da API pública
 ├── ui/                       # página de vagas, formulário, Candidates, login
@@ -75,6 +79,7 @@ Decisões principais:
 | `tests/ui/test_apply_form.py` | UI (negativo e limite) | Obrigatórios; só espaços; e-mail inválido (5 formatos); `.png` recusado; 1 MB + 1 byte recusado; arquivo vazio recusado; limites de 30/250 caracteres; telefone com letras. Nenhum envia dados |
 | `tests/ui/test_apply_form.py` | UI (positivo) | Exatamente 1 MB aceito; as 6 extensões anunciadas aceitas; candidatura válida enviada com todos os campos, CSRF e arquivo (envio interceptado) |
 | `tests/ui/test_candidates.py` | UI (somente leitura) | Lista de candidatos igual à resposta da API; filtro por nome encontra o candidato; estado vazio |
+| `tests/ui/test_timesheets.py` | UI + API (somente leitura) | Regressão curta de Time ligada ao bug relatado pelo cliente: listagem de timesheets pendentes igual à API; a busca do detalhe resolve o mesmo timesheet da listagem; View abre período, status, lançamentos, total e histórico do item escolhido; reload e voltar/avançar; anterior/próximo. Um cenário `xfail(strict)` documenta o defeito BUG-TIME-01 (troca rápida de período com rede lenta exibe outro período) |
 | `tests/ui/test_login.py` | UI | Login válido abre o Dashboard; senha inválida exibe "Invalid credentials" |
 | `tests/e2e/test_apply_end_to_end.py` | E2E (`write`) | Candidatura pública cria candidato com os dados enviados, status "Application Initiated", histórico "Applied" e aparece em Candidates; sem consentimento grava `consentToKeepData=false`; vaga despublicada some da página e o formulário deixa de abrir |
 
@@ -143,6 +148,10 @@ inteira é descartada ao fim.
    dias úteis às 06:00 (BRT) para detectar mudanças na demo. Usa uma nova tentativa (`--reruns 1`) por
    ser um ambiente compartilhado e instável; o Allure mostra quais testes precisaram dela.
 
+Há também o workflow manual **Evidências (demo pública)** (`evidence.yml`), que roda
+`tools/evidence/capture_demo.py` na demo para coletar prints e dados das telas citadas no documento
+de evidências, roda a regressão de leitura e publica tudo no branch `evidence`.
+
 Cada execução publica como artefatos o relatório Allure em arquivo único (`allure-report-*`), os
 resultados brutos e os traces de falha.
 
@@ -165,6 +174,9 @@ real, credencial corporativa ou arquivo real é usado. As credenciais padrão s�
   byte como inválido), o que é enganoso para o usuário. O teste valida a recusa, não a mensagem.
 - **Busca por nome em Candidates** sugere candidatos por primeiro, meio *ou* último nome
   separadamente; digitar o nome completo não traz sugestões. O Page Object digita uma parte do nome.
+- **Formato de data e textos da demo podem ser alterados por visitantes** (ex.: data em `Y-d-m`).
+  Os testes leem o formato em Admin > Localization e os textos em `core/i18n/messages` em vez de
+  fixá-los.
 - **Validação do servidor** do envio público não é exercitada diretamente na demo (exigiria gravar);
   fica coberta pelo E2E no ambiente isolado.
 

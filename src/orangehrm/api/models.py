@@ -145,3 +145,50 @@ class Employee(ApiModel):
     last_name: str = Field(alias="lastName")
     employee_id: str | None = Field(default=None, alias="employeeId")
     termination_id: int | None = Field(default=None, alias="terminationId")
+
+
+# --- Time ------------------------------------------------------------------
+
+
+class TimesheetStatus(ApiModel):
+    id: str
+    name: str
+
+
+class Timesheet(ApiModel):
+    id: int = Field(ge=0)  # a API devolve id 0 quando não existe timesheet no período
+    status: TimesheetStatus | None = None
+    start_date: date = Field(alias="startDate")
+    end_date: date = Field(alias="endDate")
+
+
+class PendingTimesheet(Timesheet):
+    """Item de `GET /api/v2/time/employees/timesheets/list` (pendentes de ação)."""
+
+    employee: EmployeeRef
+
+
+class DurationTotal(ApiModel):
+    hours: int
+    minutes: int
+    label: str
+
+
+class TimesheetEntriesMeta(ApiModel):
+    timesheet: Timesheet
+    sum: DurationTotal
+    dates: list[date]
+    employee: EmployeeRef
+
+
+class TimesheetEntries(ApiModel):
+    data: list[dict]
+    meta: TimesheetEntriesMeta
+
+
+class TimesheetActionLog(ApiModel):
+    id: int
+    action: dict
+    comment: str | None = None
+    date: date
+    performed_employee: EmployeeRef | None = Field(default=None, alias="performedEmployee")

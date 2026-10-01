@@ -1,0 +1,62 @@
+name: Evidências (demo pública)
+
+# Coleta, sob demanda, prints e dados das telas usadas no documento de
+# evidências e roda a regressão de leitura na demo. Somente leitura.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write # publica o resultado no branch "evidence"
+
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      ORANGEHRM_BASE_URL: https://opensource-demo.orangehrmlive.com
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+          cache: pip
+      - name: Instalar dependências
+        run: |
+          pip install -e .
+          python -m playwright install --with-deps chromium
+
+      - name: Coletar telas e dados
+        run: python tools/evidence/capture_demo.py evidence-output
+
+      - name: Regressão de leitura na demo
+        continue-on-error: true
+        run: >
+          pytest -m "not write" -n 4
+          --alluredir=reports/allure-results
+          --junitxml=evidence-output/junit-demo.xml
+
+      - name: Relatório Allure (arquivo único)
+        if: ${{ !cancelled() }}
+        run: |
+          npm install -g allure-commandline@2.46.1
+          allure generate reports/allure-results --clean --single-file -o evidence-output/allure
+          cp -r reports/test-results evidence-output/test-results 2>/dev/null || true
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: evidence-demo
+          path: evidence-output
+
+      - name: Publicar no branch evidence
+        if: ${{ !cancelled() }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          cp -r evidence-output /tmp/evidence-output
+          git checkout --orphan evidence-publish
+          git rm -rfq .
+          cp -r /tmp/evidence-output/. .
+          git add -A
+          git commit -qm "Evidências da demo - run ${{ github.run_id }}"
+          git push -f origin HEAD:evidence

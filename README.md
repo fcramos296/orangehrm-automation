@@ -17,6 +17,12 @@ outra parte do sistema quebrar o fluxo de recrutamento.
 | CI/CD | GitHub Actions |
 | Aplicação validada | OrangeHRM OS 5.9 (instância isolada) e demo pública |
 
+## Documento de evidências
+
+[`docs/Evidencias_QA_OrangeHRM.pdf`](docs/Evidencias_QA_OrangeHRM.pdf) (também em `.docx`) reúne as três
+atividades do desafio: análise da história Recruitment → PIM, investigação do bug de timesheets com o
+defeito BUG-TIME-01 e a regressão de Time, e a estratégia desta automação com as evidências da execução.
+
 ## Por que este fluxo
 
 O fluxo crítico escolhido é **vaga publicada → página pública → formulário de candidatura → candidato no

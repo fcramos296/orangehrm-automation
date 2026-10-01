@@ -1,0 +1,299 @@
+{
+  "errors": [],
+  "environment": {
+    "url": "https://opensource-demo.orangehrmlive.com/",
+    "footer": "OrangeHRM OS 5.9 © 2005 - 2026 OrangeHRM, Inc. All rights reserved.",
+    "captured_at_utc": "2026-10-01T08:39:34+00:00",
+    "localization": {
+      "language": "en_US",
+      "dateFormat": "Y-d-m"
+    },
+    "timesheet_period": {
+      "startDay": "1"
+    }
+  },
+  "recruitment": {
+    "total_candidates": 73,
+    "status_distribution_first_200": {
+      "(sem vaga)": 20,
+      "Application Initiated": 25,
+      "Shortlisted": 20,
+      "Rejected": 5,
+      "Interview Failed": 2,
+      "Interview Scheduled": 1
+    },
+    "statuses": [
+      {
+        "id": 1,
+        "label": "Application Initiated"
+      },
+      {
+        "id": 2,
+        "label": "Shortlisted"
+      },
+      {
+        "id": 3,
+        "label": "Rejected"
+      },
+      {
+        "id": 4,
+        "label": "Interview Scheduled"
+      },
+      {
+        "id": 5,
+        "label": "Interview Passed"
+      },
+      {
+        "id": 6,
+        "label": "Interview Failed"
+      },
+      {
+        "id": 7,
+        "label": "Job Offered"
+      },
+      {
+        "id": 8,
+        "label": "Offer Declined"
+      },
+      {
+        "id": 9,
+        "label": "Hired"
+      }
+    ],
+    "samples_by_status": {
+      "Application Initiated": {
+        "candidate_id": 84,
+        "vacancy": "Auto Vacancy 1790842474638",
+        "allowed_actions": [
+          "Shortlist",
+          "Reject"
+        ],
+        "consentToKeepData": false,
+        "has_email": true
+      },
+      "Shortlisted": {
+        "candidate_id": 29,
+        "vacancy": "Senior QA Lead",
+        "allowed_actions": [
+          "Reject",
+          "Schedule Interview"
+        ],
+        "consentToKeepData": true,
+        "has_email": true
+      },
+      "Rejected": {
+        "candidate_id": 68,
+        "vacancy": "Senior QA Lead",
+        "allowed_actions": [],
+        "consentToKeepData": true,
+        "has_email": true
+      },
+      "Interview Failed": {
+        "candidate_id": 5,
+        "vacancy": "Sales Representative",
+        "allowed_actions": [
+          "Reject"
+        ],
+        "consentToKeepData": true,
+        "has_email": true
+      },
+      "Interview Scheduled": {
+        "candidate_id": 13,
+        "vacancy": "Senior QA Lead",
+        "allowed_actions": [
+          "Reject",
+          "Mark Interview Passed",
+          "Mark Interview Failed"
+        ],
+        "consentToKeepData": false,
+        "has_email": true
+      }
+    },
+    "hired_vs_pim": [],
+    "hire_form": "sem candidato em Job Offered"
+  },
+  "pim": {
+    "add_employee_generated_id": "0488",
+    "add_employee_fields": [
+      "Employee Full Name",
+      "Employee Id",
+      ""
+    ]
+  },
+  "time": {
+    "pending_total": 3,
+    "comparisons": [
+      {
+        "list": {
+          "id": 260,
+          "employee": "Bilol Abdurasul Abdurasul",
+          "middleName_raw": "Abdurasul",
+          "terminationId": null,
+          "status": "Submitted",
+          "period": [
+            "2023-01-16",
+            "2023-01-22"
+          ]
+        },
+        "detail_lookup": {
+          "id": 260,
+          "status": "Submitted",
+          "period": [
+            "2023-01-16",
+            "2023-01-22"
+          ]
+        },
+        "entries": {
+          "rows": 0,
+          "total": "00:00"
+        },
+        "action_log": [
+          {
+            "action": "Submitted",
+            "date": "2023-01-16",
+            "by": "Bilol Abdurasul"
+          }
+        ],
+        "same_timesheet": true,
+        "ui_detail": {
+          "url": "https://opensource-demo.orangehrmlive.com/web/index.php/time/viewTimesheet/employeeId/7?startDate=2023-01-16",
+          "period": "2023-16-01 to 2023-22-01",
+          "status": [
+            "Status: Submitted"
+          ]
+        }
+      },
+      {
+        "list": {
+          "id": 259,
+          "employee": "Bilol Abdurasul Abdurasul",
+          "middleName_raw": "Abdurasul",
+          "terminationId": null,
+          "status": "Submitted",
+          "period": [
+            "2022-08-15",
+            "2022-08-21"
+          ]
+        },
+        "detail_lookup": {
+          "id": 259,
+          "status": "Submitted",
+          "period": [
+            "2022-08-15",
+            "2022-08-21"
+          ]
+        },
+        "entries": {
+          "rows": 4,
+          "total": "40:30"
+        },
+        "action_log": [
+          {
+            "action": "Submitted",
+            "date": "2022-08-19",
+            "by": "Bilol Abdurasul"
+          }
+        ],
+        "same_timesheet": true,
+        "ui_detail": {
+          "url": "https://opensource-demo.orangehrmlive.com/web/index.php/time/viewTimesheet/employeeId/7?startDate=2022-08-15",
+          "period": "2022-15-08 to 2022-21-08",
+          "status": [
+            "Status: Submitted"
+          ]
+        }
+      },
+      {
+        "list": {
+          "id": 40,
+          "employee": "Bilol Abdurasul Abdurasul",
+          "middleName_raw": "Abdurasul",
+          "terminationId": null,
+          "status": "Submitted",
+          "period": [
+            "2020-09-14",
+            "2020-09-20"
+          ]
+        },
+        "detail_lookup": {
+          "id": 40,
+          "status": "Submitted",
+          "period": [
+            "2020-09-14",
+            "2020-09-20"
+          ]
+        },
+        "entries": {
+          "rows": 7,
+          "total": "40:00"
+        },
+        "action_log": [
+          {
+            "action": "Submitted",
+            "date": "2020-10-09",
+            "by": "Bilol Abdurasul"
+          }
+        ],
+        "same_timesheet": true,
+        "ui_detail": {
+          "url": "https://opensource-demo.orangehrmlive.com/web/index.php/time/viewTimesheet/employeeId/7?startDate=2020-09-14",
+          "period": "2020-14-09 to 2020-20-09",
+          "status": [
+            "Status: Submitted"
+          ]
+        }
+      }
+    ],
+    "ui_list_rows": [
+      "Bilol Abdurasul Abdurasul | 2023-16-01 - 2023-22-01 | View",
+      "Bilol Abdurasul Abdurasul | 2022-15-08 - 2022-21-08 | View",
+      "Bilol Abdurasul Abdurasul | 2020-14-09 - 2020-20-09 | View"
+    ],
+    "variations": {
+      "item": {
+        "id": 260,
+        "employee": {
+          "empNumber": 7,
+          "lastName": "Abdurasul",
+          "firstName": "Bilol",
+          "middleName": "Abdurasul",
+          "terminationId": null
+        },
+        "status": {
+          "id": "SUBMITTED",
+          "name": "Submitted"
+        },
+        "startDate": "2023-01-16",
+        "endDate": "2023-01-22"
+      },
+      "initial": "2023-16-01 to 2023-22-01",
+      "after_reload": "2023-16-01 to 2023-22-01",
+      "after_back_url": "https://opensource-demo.orangehrmlive.com/web/index.php/time/viewEmployeeTimesheet",
+      "after_forward": "2023-16-01 to 2023-22-01",
+      "previous_period": "2023-09-01 to 2023-15-01",
+      "previous_url": "https://opensource-demo.orangehrmlive.com/web/index.php/time/viewTimesheet/employeeId/7?startDate=2023-01-16",
+      "back_to_period": "2023-16-01 to 2023-22-01",
+      "slow_network_before_release": "2023-16-01 to 2023-22-01",
+      "slow_network_after_release": "2023-09-01 to 2023-15-01",
+      "slow_network_url": "https://opensource-demo.orangehrmlive.com/web/index.php/time/viewTimesheet/employeeId/7?startDate=2023-01-16",
+      "slow_network_body": "Timesheet for Bilol Abdurasul Timesheet Period No Timesheets Found Create Timesheet"
+    },
+    "filter_view": {
+      "url": "https://opensource-demo.orangehrmlive.com/web/index.php/time/viewTimesheet/employeeId/7",
+      "period": "2026-28-09 to 2026-04-10"
+    },
+    "dashboard_action_summary": [
+      {
+        "id": 4,
+        "group": "Pending Self Reviews",
+        "pendingActionCount": 1
+      },
+      {
+        "id": 5,
+        "group": "Candidates To Interview",
+        "pendingActionCount": 1
+      }
+    ],
+    "dashboard_my_actions_text": "My Actions (1) Pending Self Review (1) Candidate to Interview"
+  }
+}
